@@ -1,0 +1,53 @@
+{
+    "level" : {
+        "status" : {
+            "life" : 15,
+            "gold" : 150,
+            "waves" : 7
+        },
+       
+        "path" : [
+            [
+                {"x" : 85, "y" : 520},
+                {"x" : 330, "y" : 520},
+                {"x" : 390, "y" : 630},
+                {"x" : 505, "y" : 695},
+                {"x" : 695, "y" : 695},
+                {"x" : 865, "y" : 520},
+                {"x" : 1190, "y" : 520}
+            ],
+            [
+                {"x" : 85, "y" : 520},
+                {"x" : 330, "y" : 520},
+                {"x" : 475, "y" : 340},
+                {"x" : 705, "y" : 340},
+                {"x" : 865, "y" : 520},
+                {"x" : 1190, "y" : 520}
+            ]
+        ],
+
+        "enmy" :[
+            [
+                {"type" : "a", "life" : 50 ,"damage" : [4,7], "speed" : 15,  "subPath" : 1}
+            ],
+            [
+                {"type" : "a", "life" : 50 ,"damage" : [4,7], "speed" : 15, "fly" : false, "subPath" : 1}
+            ],
+            [
+                {"type" : "a", "life" : 50 ,"damage" : [4,7], "speed" : 15, "fly" : false, "subPath" : 1}
+            ],
+            [
+                {"type" : "a", "life" : 50 ,"damage" : [4,7], "speed" : 15, "fly" : false, "subPath" : 1}
+            ],
+            [
+                {"type" : "a", "life" : 50 ,"damage" : [4,7], "speed" : 15, "fly" : false, "subPath" : 1}
+            ],
+            [
+                {"type" : "a", "life" : 50 ,"damage" : [4,7], "speed" : 15, "fly" : false, "subPath" : 1}
+            ],
+            [
+                {"type" : "a", "life" : 50 ,"damage" : [4,7], "speed" : 15, "fly" : false, "subPath" : 1}
+            ]
+        ]
+    }
+}
