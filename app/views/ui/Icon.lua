@@ -1,6 +1,6 @@
 local Icon = class("Icon",cc.Node)
 
-Icon.RESOURCE_FILENAME = "icon.csb"
+Icon.RESOURCE_FILENAME = "ui/icon.csb"
 
 function Icon:ctor(iconType, cost)
     self._rootNode = nil

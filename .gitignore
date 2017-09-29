@@ -86,3 +86,4 @@ cocos/ui/DeprecatedUIEnum.lua
 cocos/ui/DeprecatedUIFunc.lua
 cocos/ui/experimentalUIConstants.lua
 cocos/ui/GuiConstants.lua
+.vscode/settings.json

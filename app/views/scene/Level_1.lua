@@ -11,7 +11,7 @@ function Level_1:ctor()
     self._terrains = {}
     --gameManager:setStatus(10,80,0,7)
     self:init()
-    self:addTerrainCallBack(self._mapImg, self._terrains)
+    self:addTerrainCallBack(self._terrains)
     --self:createMap()
 end
 

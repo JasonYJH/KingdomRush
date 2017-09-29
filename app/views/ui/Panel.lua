@@ -3,13 +3,13 @@ local Panel = class("Panel",require("app.common.DialogLayer"))
 local Icon = require("app.views.ui.Icon")
 local iconType = require("app.models.GameDefine").ICON_TYPE
 
-Panel.RESOURCE_FILENAME = "panel.csb"
+Panel.RESOURCE_FILENAME = "ui/panel.csb"
 
 function Panel:ctor(...)
     self.super.ctor(self)
     self._rootNode = nil
     self:init()
-    self:addIcon(...)
+    --self:addIcon(...)
 end
 
 function Panel:init()

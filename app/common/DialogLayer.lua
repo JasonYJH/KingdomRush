@@ -1,10 +1,5 @@
 local DialogLayer = class("DialogLayer",function ( ... )
-    local arg = {...}
-    if #arg == 0 then
-        return cc.LayerColor:create(cc.c4b(0,0,0,0))
-    else
-        return cc.LayerColor:create(...)
-    end
+    return cc.LayerColor:create(cc.c4b(0,0,0,0))
 end)
 
 function DialogLayer:ctor()
@@ -13,9 +8,9 @@ function DialogLayer:ctor()
     
     local function onTouchEvent(event)
         
-        if event == TOUCH_EVENT_BEGAN then
+        if event.name == "began" then
             return true
-        elseif event == TOUCH_EVENT_ENDED then
+        elseif event.name == "ended" then
             self:removeSelf()
         end
     end

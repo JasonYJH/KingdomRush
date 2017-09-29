@@ -4,10 +4,10 @@ local Panel = require("app.views.ui.Panel")
 local IconType = GameDefine.ICON_TYPE
 
 function BaseMap:ctor()
-    self._isMenuOpen = false
+    
 end
 
-function BaseMap:addTerrainCallBack(map,terrains)
+function BaseMap:addTerrainCallBack(terrains)
     if type(terrains) ~= "table" or isEmpty(terrains) then
         error("prama invalid")
     end
@@ -31,9 +31,9 @@ function BaseMap:addTerrainCallBack(map,terrains)
     -- end
 
     local function onClickCallBack(sender)
-        Panel:create(IconType.BARRACK, IconType.ARCHER, IconType.MAGIC, IconType.ARTILLERY)
-        Panel:move(sender:getPosition())
-        Panel:addTo(sender:getParent(),sender:getZOrder() + 1)
+        local panel = Panel:create(IconType.BARRACK, IconType.ARCHER, IconType.MAGIC, IconType.ARTILLERY)
+        panel:move(sender:getPosition())
+        panel:addTo(sender:getParent(),sender:getZOrder() + 1)
     end
 
     for _,terrain in pairs(terrains) do

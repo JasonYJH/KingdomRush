@@ -4,7 +4,7 @@ cc.FileUtils:getInstance():addSearchPath("src/")
 cc.FileUtils:getInstance():addSearchPath("res/")
 --cc.FileUtils:getInstance():addSearchPath("res/level")
 
-package.path = package.path .. "C:/Code/KingdomRush-L/src/?.lua;"
+package.path = package.path-- .. "C:/Code/KingdomRush-L/src/?.lua;"
 
 require "config"
 require "cocos.init"
@@ -19,7 +19,7 @@ function __G__TRACKBACK__(errorMessage)
 end  
 
 local function main()
-    local layer = require("app.controller.SceneManager"):create():createLoginScene()
+    local layer = require("app.controller.SceneManager"):create():createLevel(1)
 end
 
 local status, msg = xpcall(main, __G__TRACKBACK__)
