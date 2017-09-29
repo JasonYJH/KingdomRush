@@ -4,6 +4,7 @@ function BaseTower:ctor()
     self._range = 0
     self._damage = {}
     self._target = nil
+    self._scheduleAttack = nil
 end
 
 function BaseTower:construct()  -- 播放建造动画
@@ -28,17 +29,6 @@ function BaseTower:createTower()
     
 end
 
-function BaseTower:findEnmy()
-    local cEnmyList = {}
-    for _, enmy in pairs() do 
-        if enmy:getPosition():distance(self:getPosition()) <= self._range then
-            self._info = {}
-            self._info.target = enmy
-            self._scheduleAttack = self:getScheduler():scheduleScriptFunc(handler(self,self.attack),1,true)
-        end
-    end
-end
-
 function BaseTower:attack()
 
     local function getRandDamge()
@@ -46,11 +36,16 @@ function BaseTower:attack()
         return math.random( self._damage[1],self._damage[2] )
     end
 
-    self._info.damage = getRandDamge()
-    cc.Director:getInstance():getEventDispatcher():postEvent(GameDefine.GAME_EVENT.ENMY_HURT,self._info)
+    local info = {}
+    if isEmpty(self._target) or isEmpty(self._scheduleAttack) then
+        return
+    end
+    info.target = self._target
+    info.damage = getRandDamge()
+    cc.Director:getInstance():getEventDispatcher():postEvent(GameDefine.GAME_EVENT.ENMY_HURT,info)
 
-    if self._info.target:getPosition():distance(self:getPosition()) > self._range then
-        self:getScheduler:unscheduleScriptEntry(self._scheduleAttack)
+    if self._target:getPosition():distance(self:getPosition()) > self._range then
+        self:getScheduler():unscheduleScriptEntry(self._scheduleAttack)
         self._scheduleAttack = nil
     end
 

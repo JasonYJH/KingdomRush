@@ -109,16 +109,25 @@ function GameLogic:handleFindTarget(Info)
     
     local targetList = {}
     local this = Info.this
-    if Info.this._isEnmy then
+    if this._isEnmy then
         targetList = self._cEnmyList
     else
         targetList = self._cArmyList
     end
 
-    for _, target in pairs(targetList) do 
-        if target._fly and target:getPosition():distance(Info.this._isEnmy:getPosition()) <= Info.range then
-            dispatcher:postEvent(GameDefine.GAME_EVENT.GET_TARGET, target)
-            break
+    if Info.airDefence then --能对空
+        for _, target in pairs(targetList) do 
+            if target:getPosition():distance(this._isEnmy:getPosition()) <= Info.range then
+                dispatcher:postEvent(GameDefine.GAME_EVENT.GET_TARGET, target)
+                break
+            end
+        end
+    else
+        for _, target in pairs(targetList) do 
+            if target._fly and target:getPosition():distance(this._isEnmy:getPosition()) <= Info.range then
+                dispatcher:postEvent(GameDefine.GAME_EVENT.GET_TARGET, target)
+                break
+            end
         end
     end
 

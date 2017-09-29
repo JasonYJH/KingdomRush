@@ -3,6 +3,7 @@ local LevelUi = class("LevelUi",cc.Layer)
 LevelUi.RESOURCE_FILENAME = "ui/level_ui.csb"
 
 function LevelUi:ctor()
+
     self._rootNode = nil
     self._top = nil
     self._bottom = nil
@@ -39,27 +40,22 @@ function LevelUi:init()
     self._goldText = self._statusNode:getChildByName("golds_txt")
     self._waveText = self._statusNode:getChildByName("waves_txt")
 
-    cc.Director:getInstance():getEventDispatcher():addEvent(GameDefine.GAME_EVENT.STATUS_CHANGE,self,self.statusChangeCallBack)
+    self._pauseBtn:addClickEventListener(handler(self,self.onPauseBtnClick))
+
+    self:getEventDispatcher():addEvent(GameDefine.GAME_EVENT.STATUS_CHANGE, self, self.handleStatusChange)
 end
 
-function LevelUi:statusChangeCallBack(event)
-    self._lifeText:setString(tostring(event.life))
-    self._goldText:setString(tostring(event.gold))
-    self._waveText:setString(string.format( "0 / %d", event.waves ))
+function LevelUi:handleStatusChange(info)
+    self._lifeText:setString(tostring(info.life))
+    self._goldText:setString(tostring(info.gold))
+    self._waveText:setString(string.format( "%d / %d", info.wave, info.waves ))
 end
 
-function LevelUi:setPauseBtn()
-    if isEmpty(self._pauseBtn) then
-        return
-    end
-
-    local function pauseCallBack( sender )
-        self:move(self._top, cc.p(0,110), 0.5)
-        self:move(self._bottom, cc.p(0,-140), 0.5)
-        cc.Director:getInstance():pause() -- 暂停游戏
-    end
-
-    self._pauseBtn:addClickEventListener(pauseCallBack)
+function LevelUi:onPauseBtnClick(sender)
+    
+    self:move(self._top, cc.p(0,110), 0.5)
+    self:move(self._bottom, cc.p(0,-140), 0.5)
+    cc.Director:getInstance():pause() -- 暂停游戏
 
 end
 
