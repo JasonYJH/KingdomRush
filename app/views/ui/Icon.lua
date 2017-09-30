@@ -2,17 +2,16 @@ local Icon = class("Icon",cc.Node)
 
 Icon.RESOURCE_FILENAME = "ui/icon.csb"
 
-function Icon:ctor(iconType, cost)
+function Icon:ctor(iconType, attributes)
     self._rootNode = nil
     self._iconImg = nil
     self._priceImg = nil
     self._priceText = nil
 
-    self._cost = cost
-    self._litImg = nil
-    self._offImg = nil
-    self:checkIcon(iconType)
-    self:init(iconType)
+    self._cost = nil
+    self._type = nil
+    self:init()
+    self:checkIcon(iconType, attributes)
 end
 
 function Icon:init()
@@ -31,44 +30,36 @@ function Icon:init()
 
     loadPlist("image/ui/common_spritesheet_16_a_2-hd.plist")
 
-    if isEmpty(self._cost) then -- icon类型1，无需金币
-        self:litIcon()
-        self._iconImg:addClickEventListener(handler(self,self.iconClickCallBack))
+    self._iconImg:addTouchEventListener(handler(self,self.onIconClick))
+   
+    cc.Director:getInstance():getEventDispatcher():addEvent(GameDefine.GAME_EVENT.STATUS_CHANGE,self,self.handleStatusChange)
+end
+
+function Icon:handleStatusChange(Info)
+
+    if isEmpty(self._cost) then
+        self:setIconEnable(true)
+        return
+    end
+
+    if self._cost > Info.gold then -- 金币不足
+        self:setIconEnable(false)
     else
-        local disPatcher = cc.Director:getInstance():getEventDispatcher()
-        self._iconImg:addTouchEventListener(handler(self,self.iconTouchCallBack))
-        disPatcher:postEvent(GameDefine.GAME_EVENT.REQUEST_STATUS)
-        disPatcher:addEvent(GameDefine.GAME_EVENT.STATUS_CHANGE,self,self.statusChangeCallBack)
+        self:setIconEnable(true)
     end
 end
 
-function Icon:onCreate()
-    loadPlist("image/ui/common_spritesheet_16_a_2-hd.plist")
-    self:createIcon()
-    self.confirmName = "main_icons_0019.png"
-    local icon = self:getResourceNode():getChildByTag(1)
-    icon:addTouchEventListener(handler(self,self.touchCallBack))
-end
+function Icon:onIconClick(sender)
 
-function Icon:statusChangeCallBack(event)
-    if self._cost > event[1] then -- 金币不足
-        -- 图标暗
-        self._lastStatus = self._lastStatus or true
-        if self._lastStatus then
-            self:offIcon()
-            self._lastStatus = false
-        end
-    else
-        -- 图标亮
-        self._lastStatus = self._lastStatus or false
-        if not self._lastStatus then
-            self:litIcon()
-            self._lastStatus = true
-        end
+    if self._type == GameDefine.ICON_TYPE.BUILDING then
+        cc.Director:getInstance():getEventDispatcher():postEvent()
+    elseif self._type == GameDefine.ICON_TYPE.UPDATE then
+        cc.Director:getInstance():getEventDispatcher():postEvent()
+    elseif self._type == GameDefine.ICON_TYPE.CELL then
+        cc.Director:getInstance():getEventDispatcher():postEvent()
     end
-end
+    self:getParent():getParent():removeSelf()   --  移除panel
 
-function Icon:iconClickCallBack(event)
 end
 
 function Icon:touchCallBack(target,status)
@@ -84,54 +75,73 @@ function Icon:touchCallBack(target,status)
     end
 end
 
-function Icon:checkIcon(iconType)
-    if iconType == GameDefine.ICON_TYPE.BARRACK then
-        self._litImg = "main_icons_0002.png"
-        self._offImg = "main_icons_disabled_0002.png"
 
-    elseif iconType == GameDefine.ICON_TYPE.ARCHER then
-        self._litImg = "main_icons_0001.png"
-        self._offImg = "main_icons_disabled_0001.png"
+function Icon:setIconEnable(enable)
+    
+    if enable then
+        self._iconImg:setEnabled(true)
+        if not isEmpty(self._cost) then
+            self._priceText:setColor(cc.c3b(244, 226, 144))
+        end
+    else
+        self._iconImg:setEnabled(false)
+        if not isEmpty(self._cost) then
+            self._priceText:setColor(cc.c3b(108, 106, 105))
+        end
+    end
 
-    elseif iconType == GameDefine.ICON_TYPE.MAGIC then
-        self._litImg = "main_icons_0003.png"
-        self._offImg = "main_icons_disabled_0003.png"
+end
 
-    elseif iconType == GameDefine.ICON_TYPE.ARTILLERY then
-        self._litImg = "main_icons_0004.png"
-        self._offImg = "main_icons_disabled_0004.png"
+function Icon:checkIcon(iconType, attributes)
+
+    if iconType == GameDefine.ICON_TYPE.BUILDING then
+        if attributes == GameDefine.TOWER_TYPE.BARRACK_1 then
+            self._iconImg:loadTexture("main_icons_0002.png",1)
+            self._cost = GameDefine.TOWER_TYPE.BARRACK_1.price
+        elseif attributes == GameDefine.TOWER_TYPE.ARCHER_1 then
+            self._iconImg:loadTexture("main_icons_0001.png",1)
+            self._cost = GameDefine.TOWER_TYPE.ARCHER_1.price
+        elseif attributes == GameDefine.TOWER_TYPE.MAGIC_1 then
+            self._iconImg:loadTexture("main_icons_0003.png",1)
+            self._cost = GameDefine.TOWER_TYPE.MAGIC_1.price
+        elseif attributes == GameDefine.TOWER_TYPE.ARTILLERY_1 then
+            self._iconImg:loadTexture("main_icons_0004.png",1)
+            self._cost = GameDefine.TOWER_TYPE.ARTILLERY_1.price
+        else
+            return
+        end
+        self._priceText:setString(string.format("%d",self._cost))
 
     elseif iconType == GameDefine.ICON_TYPE.UPDATE then
-        self._litImg = "main_icons_0005.png"
-        self._offImg = "main_icons_disabled_0005.png"
+        for _, type in pairs(GameDefine.TOWER_TYPE) do
+            if type == attributes then
+                self._iconImg:loadTexture("main_icons_0005.png",1)
+                self._cost = type.price
+                break
+            end
+        end
+        self._priceText:setString(string.format("%d",self._cost))
 
     elseif iconType == GameDefine.ICON_TYPE.CELL then
-        self._litImg = "ico_sell_0001.png"
-        self._offImg = nil
-    else
-        self.price = GameDefine.ICON_TYPE.BARRACK
-        self.litName = "main_icons_0002.png"
-        self.offName = "main_icons_disabled_0002.png"
-    end
-    self:litIcon()
-end
+        for _, type in pairs(GameDefine.TOWER_TYPE) do
+            if type == attributes then
+                self._iconImg:loadTexture("ico_sell_0001.png",1)
+                self._cost = checkint(type.price * 0.6)
+                break
+            end
+        end
+        self._priceText:setString(string.format("%d",self._cost))
 
-function Icon:litIcon()
-    self._iconImg:setTouchEnabled(true)
-    self._iconImg:loadTexture(self._litImg,1)
-    if isEmpty(self._cost) then
+    elseif iconType == GameDefine.ICON_TYPE.LOCKED then
+        self._priceImg:hide()
+    elseif iconType == GameDefine.ICON_TYPE.FLAG then
         self._priceImg:hide()
     else
-        self._priceText:setString(string.format("%d",self._cost))
+        return
     end
-    self._priceText:setColor(cc.c3b(244, 226, 144))
-end
 
-function Icon:offIcon()
-    self._iconImg:setTouchEnabled(false)
-    self._iconImg:loadTexture(self._offImg,1)
-    self._priceText:setString(string.format("%d",self._cost))
-    self._priceText:setColor(cc.c3b(108, 106, 105))
+    cc.Director:getInstance():getEventDispatcher():postEvent(GameDefine.GAME_EVENT.REQUEST_STATUS)
+
 end
 
 return Icon

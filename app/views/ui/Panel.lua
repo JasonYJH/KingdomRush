@@ -1,15 +1,15 @@
 local Panel = class("Panel",require("app.common.DialogLayer"))
 
 local Icon = require("app.views.ui.Icon")
-local iconType = require("app.models.GameDefine").ICON_TYPE
 
 Panel.RESOURCE_FILENAME = "ui/panel.csb"
 
 function Panel:ctor(...)
     self.super.ctor(self)
     self._rootNode = nil
+    self._posIcon = {}
     self:init()
-    --self:addIcon(...)
+    self:addIcon(...)
 end
 
 function Panel:init()
@@ -21,32 +21,38 @@ function Panel:init()
     if isEmpty(self._rootNode) then
         return
     end
+
+    for i=1,7 do
+        self._posIcon[i] = self._rootNode:getChildByName("")
+    end
 end
 
 function Panel:addIcon(...)
     local icons = {...}
-    for _,v in pairs(icons) do
-        if v == iconType.BARRACK then
-            local icon = Icon:create(v)
-            self._rootNode:getChildByTag(1):add(icon)
-        elseif v == iconType.ARCHER then
-            local icon = Icon:create(v)
-            self._rootNode:getChildByTag(2):add(icon)
-        elseif v == iconType.MAGIC then
-            local icon = Icon:create(v)
-            self._rootNode:getChildByTag(3):add(icon)
-        elseif v == iconType.ARTILLERY then
-            local icon = Icon:create(v)
-            self._rootNode:getChildByTag(4):add(icon)
-        elseif v == iconType.CELL then
-            local icon = Icon:create(v)
-            self._rootNode:getChildByTag(6):add(icon)
-        --elseif v == iconType.FLAG then
-        --elseif v == iconType.LOCKED then
-        else
-            local icon = Icon:create(v)
-            self._rootNode:getChildByTag(5):add(icon)
-        end
+    if #icons == 4 then
+        local icon_1 = Icon:create(icons[1][1],icons[1][2])
+        local icon_2 = Icon:create(icons[2][1],icons[2][2])
+        local icon_3 = Icon:create(icons[3][1],icons[3][2])
+        local icon_4 = Icon:create(icons[4][1],icons[4][2])
+        self._posIcon[1]:addChild(icon_1)
+        self._posIcon[2]:addChild(icon_2)
+        self._posIcon[3]:addChild(icon_3)
+        self._posIcon[4]:addChild(icon_4)
+    elseif #icons == 3 then
+        local icon_1 = Icon:create(icons[1][1],icons[1][2])
+        local icon_2 = Icon:create(icons[2][1],icons[2][2])
+        local icon_3 = Icon:create(icons[3][1],icons[3][2])
+        self._posIcon[5]:addChild(icon_1)
+        self._posIcon[6]:addChild(icon_2)
+        self._posIcon[7]:addChild(icon_3)
+    elseif #icons == 2 then
+        local icon_1 = Icon:create(icons[1][1],icons[1][2])
+        local icon_2 = Icon:create(icons[2][1],icons[2][2])
+        self._posIcon[5]:addChild(icon_1)
+        self._posIcon[6]:addChild(icon_2)
+    elseif #icons == 1 then
+        local icon_1 = Icon:create(icons[1][1],icons[1][2])
+        self._posIcon[6]:addChild(icon_1)
     end
 end
 

@@ -11,14 +11,19 @@ GameDefine.INTRODUCE = {
 }
 
 GameDefine.ICON_TYPE = {
-    BARRACK   = {70},
-    ARCHER    = {70}, 
-    MAGIC     = {100}, 
-    ARTILLERY = {120}, 
-    CELL      = {0}, 
-    UPDATE    = {0}, 
-    FLAG      = {0},
-    LOCKED    = {0}
+    BUILDING  = "building",
+    CELL      = "cell",
+    UPDATE    = "update",
+    FLAG      = "flag",
+    LOCKED    = "lock"
+}
+
+GameDefine.TOWER_TYPE = {
+
+    BARRACK_1   = { price = 70, rang = 150, airDefine = false},
+    ARCHER_1    = { price = 70, rang = 150, airDefine = true},
+    MAGIC_1     = { price = 100, rang = 150, airDefine = true},
+    ARTILLERY_1 = { price = 120, rang = 120, airDefine = false}
 }
 
 GameDefine.FRAME_EVENT = {

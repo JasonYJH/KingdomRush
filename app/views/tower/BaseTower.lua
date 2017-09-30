@@ -5,6 +5,7 @@ function BaseTower:ctor()
     self._damage = {}
     self._target = nil
     self._scheduleAttack = nil
+    self._rootAction = nil
 end
 
 function BaseTower:construct()  -- 播放建造动画

@@ -51,21 +51,6 @@ function BaseRole:move( pos ,target, callback)
     end
 end
 
-function BaseRole:findTarget()
-    local targetList = {}
-    if self._isEnmy then
-        local cArmyList = {}
-    else
-        local cEnmyList = {}
-    for _, enmy in pairs() do 
-        if enmy:getPosition():distance(self:getPosition()) <= self._range then
-            self._info = {}
-            self._info.target = enmy
-            self._scheduleAttack = self:getScheduler():scheduleScriptFunc(handler(self,self.attack),1,true)
-        end
-    end
-end
-
 function BaseRole:attack()
 
     local function getRandDamge()
@@ -77,7 +62,7 @@ function BaseRole:attack()
     cc.Director:getInstance():getEventDispatcher():postEvent(GameDefine.GAME_EVENT.ENMY_HURT,self._info)
 
     if self._info.target:getPosition():distance(self:getPosition()) > self._range then
-        self:getScheduler:unscheduleScriptEntry(self._scheduleAttack)
+        self:getScheduler():unscheduleScriptEntry(self._scheduleAttack)
         self._scheduleAttack = nil
     end
 

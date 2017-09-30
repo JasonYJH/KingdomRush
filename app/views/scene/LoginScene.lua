@@ -25,6 +25,8 @@ function LoginScene:init()
 
     if not isEmpty(self.RESOURCE_FILENAME) then
         self._rootNode = cc.CSLoader:createNode(self.RESOURCE_FILENAME)
+        self._rootNode:setContentSize(display.size)
+        ccui.Helper:doLayout(self._rootNode)
         self:addChild(self._rootNode)        
     end      
     
@@ -60,8 +62,7 @@ function LoginScene:createLogo()
     self._startBtn:show()
     self._rootNode:runAction(self._action)
     self._action:play("in",false)
-    self._startBtn:addClickEventListener(handler(self,self.onStartBtnClick))
-    
+    self._startBtn:addClickEventListener(handler(self,self.onStartBtnClick)) 
 
 end
 
