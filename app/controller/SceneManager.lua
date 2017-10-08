@@ -60,14 +60,13 @@ end
 
 function SceneManager:createLevel(levelID)
 
-    self._gameLogic:create(1)
     local str = string.format( "app.views.scene.Level_%d", checkint(levelID) )
-    self._level = require(str):create()
     local scene = display.newScene("level")
+    self._level = require(str):create()
     self._level:addTo(scene, 1)
     local status = require("app.views.ui.LevelUi"):create():addTo(scene,2)
     display.runScene(scene)
-
+    
     self._gameLogic:setCurrentLevel(levelID)
     cc.Director:getInstance():getEventDispatcher():postEvent(GameDefine.GAME_EVENT.GAME_READY)
     

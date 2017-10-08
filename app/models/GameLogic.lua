@@ -51,7 +51,7 @@ function GameLogic:setCurrentLevel(lv)
     self._cLevel = checkint(lv)
 end
 
-function GameLogic:handleGameReady()
+function GameLogic:handleGameReady(Info)
 
     if isEmpty(self._cLevel) then
         printLog("GameLogic current level invalid")
@@ -140,7 +140,7 @@ function GameLogic:setStatus( status )
     end
 end
 
-function GameLogic:sendStatus()
+function GameLogic:sendStatus(Info)
     dispatcher:postEvent(GameDefine.GAME_EVENT.STATUS_CHANGE,self._status)
 end
 

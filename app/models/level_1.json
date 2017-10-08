@@ -2,7 +2,7 @@
     "level" : {
         "status" : {
             "life" : 15,
-            "gold" : 150,
+            "gold" : 100,
             "waves" : 7
         },
        

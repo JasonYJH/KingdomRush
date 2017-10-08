@@ -42,7 +42,8 @@ GameDefine.GAME_EVENT = {
     ARMY_HURT         = "army_hurt",
     ROLE_DEATH        = "role_death",
     FIND_TARGET       = "find_target",
-    GET_TARGET        = "get_target"
+    GET_TARGET        = "get_target",
+    FIND              = "find"
 }
 
 return GameDefine

@@ -1,5 +1,5 @@
+--local Panel = class("Panel",cc.Layer)
 local Panel = class("Panel",require("app.common.DialogLayer"))
-
 local Icon = require("app.views.ui.Icon")
 
 Panel.RESOURCE_FILENAME = "ui/panel.csb"
@@ -22,9 +22,10 @@ function Panel:init()
         return
     end
 
-    for i=1,7 do
-        self._posIcon[i] = self._rootNode:getChildByName("")
+    for i=1,6 do
+        self._posIcon[i] = self._rootNode:getChildByName("panel"):getChildByName("icon_" .. i)
     end
+
 end
 
 function Panel:addIcon(...)
@@ -54,6 +55,9 @@ function Panel:addIcon(...)
         local icon_1 = Icon:create(icons[1][1],icons[1][2])
         self._posIcon[6]:addChild(icon_1)
     end
+    performWithDelay(self, function ()
+        self:getEventDispatcher():postEvent(GameDefine.GAME_EVENT.REQUEST_STATUS)
+    end,0.02)
 end
 
 return Panel

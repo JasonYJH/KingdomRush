@@ -19,7 +19,7 @@ function BaseMap:addTerrainCallBack(terrains)
             {GameDefine.ICON_TYPE.BUILDING,GameDefine.TOWER_TYPE.MAGIC_1},
             {GameDefine.ICON_TYPE.BUILDING,GameDefine.TOWER_TYPE.ARTILLERY_1})
         panel:move(sender:getPosition())
-        panel:addTo(sender:getParent(),sender:getZOrder() + 1)
+        panel:addTo(sender:getParent(),sender:getLocalZOrder() + 1)
     end
 
     for _,terrain in pairs(terrains) do

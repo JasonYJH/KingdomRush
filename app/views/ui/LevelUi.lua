@@ -46,9 +46,14 @@ function LevelUi:init()
 end
 
 function LevelUi:handleStatusChange(info)
+    printInfo("event in levelui")
+    if isEmpty(info) then
+        return
+    end
     self._lifeText:setString(tostring(info.life))
     self._goldText:setString(tostring(info.gold))
     self._waveText:setString(string.format( "%d / %d", info.wave, info.waves ))
+    
 end
 
 function LevelUi:onPauseBtnClick(sender)
