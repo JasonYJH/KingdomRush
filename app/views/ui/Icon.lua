@@ -111,16 +111,16 @@ function Icon:checkIcon(iconType, attributes)
 
     if iconType == GameDefine.ICON_TYPE.BUILDING then
         if attributes == GameDefine.TOWER_TYPE.BARRACK_1 then
-            self._iconBtn:loadTextureNormal("main_icons_0002.png")
+            self._iconBtn:loadTextureNormal("main_icons_0002.png",ccui.TextureResType.plistType)
             self._cost = GameDefine.TOWER_TYPE.BARRACK_1.price
         elseif attributes == GameDefine.TOWER_TYPE.ARCHER_1 then
-            self._iconBtn:loadTextureNormal("main_icons_0001.png")
+            self._iconBtn:loadTextureNormal("main_icons_0001.png",ccui.TextureResType.plistType)
             self._cost = GameDefine.TOWER_TYPE.ARCHER_1.price
         elseif attributes == GameDefine.TOWER_TYPE.MAGIC_1 then
-            self._iconBtn:loadTextureNormal("main_icons_0003.png")
+            self._iconBtn:loadTextureNormal("main_icons_0003.png",ccui.TextureResType.plistType)
             self._cost = GameDefine.TOWER_TYPE.MAGIC_1.price
         elseif attributes == GameDefine.TOWER_TYPE.ARTILLERY_1 then
-            self._iconBtn:loadTextureNormal("main_icons_0004.png")
+            self._iconBtn:loadTextureNormal("main_icons_0004.png",ccui.TextureResType.plistType)
             self._cost = GameDefine.TOWER_TYPE.ARTILLERY_1.price
         else
             return
@@ -130,7 +130,7 @@ function Icon:checkIcon(iconType, attributes)
     elseif iconType == GameDefine.ICON_TYPE.UPDATE then
         for _, type in pairs(GameDefine.TOWER_TYPE) do
             if type == attributes then
-                self._iconBtn:loadTextureNormal("main_icons_0005.png")
+                self._iconBtn:loadTextureNormal("main_icons_0005.png",ccui.TextureResType.plistType)
                 self._cost = type.price
                 break
             end
@@ -140,7 +140,7 @@ function Icon:checkIcon(iconType, attributes)
     elseif iconType == GameDefine.ICON_TYPE.CELL then
         for _, type in pairs(GameDefine.TOWER_TYPE) do
             if type == attributes then
-                self._iconBtn:loadTextureNormal("ico_sell_0001.png")
+                self._iconBtn:loadTextureNormal("ico_sell_0001.png",ccui.TextureResType.plistType)
                 self._cost = checkint(type.price * 0.6)
                 break
             end
