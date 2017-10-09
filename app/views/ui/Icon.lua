@@ -41,7 +41,6 @@ function Icon:addEvent()
     local function onNodeEvent(event)
         if event == "exit" then
             self:getEventDispatcher():removeEvent(GameDefine.GAME_EVENT.STATUS_CHANGE)
-            self:getEventDispatcher():removeEvent(GameDefine.GAME_EVENT.FIND)
         end
     end
     self:registerScriptHandler(onNodeEvent)
@@ -50,7 +49,6 @@ end
 
 function Icon:handleStatusChange(Info)
 
-    printInfo("event in icon")
     if isEmpty(self._cost) then
         self:setIconEnable(true)
         return
@@ -66,30 +64,16 @@ end
 
 function Icon:onIconClick(sender)
 
-    -- if self._type == GameDefine.ICON_TYPE.BUILDING then
-    --     cc.Director:getInstance():getEventDispatcher():postEvent()
-    -- elseif self._type == GameDefine.ICON_TYPE.UPDATE then
-    --     cc.Director:getInstance():getEventDispatcher():postEvent()
-    -- elseif self._type == GameDefine.ICON_TYPE.CELL then
-    --     cc.Director:getInstance():getEventDispatcher():postEvent()
-    -- end
-    -- self:getParent():getParent():removeSelf()   --  移除panel
-
-end
-
-function Icon:touchCallBack(target,status)
-    if status == TOUCH_EVENT_ENDED then
-        self.confirm = self.confirm or false
-        if not self.confirm then
-            local icon = self:getResourceNode():getChildByTag(1)
-            icon:loadTexture(self.confirmName,1)
-            self.confirm = true
-        else
-            self.confirm = false
-        end
+    if self._type == GameDefine.ICON_TYPE.BUILDING then
+        cc.Director:getInstance():getEventDispatcher():postEvent()
+    elseif self._type == GameDefine.ICON_TYPE.UPDATE then
+        cc.Director:getInstance():getEventDispatcher():postEvent()
+    elseif self._type == GameDefine.ICON_TYPE.CELL then
+        cc.Director:getInstance():getEventDispatcher():postEvent()
     end
-end
+    self:getParent():getParent():getParent():removeSelf()   --  移除panel
 
+end
 
 function Icon:setIconEnable(enable)
     
@@ -125,7 +109,7 @@ function Icon:checkIcon(iconType, attributes)
         else
             return
         end
-        self._priceText:setString(string.format("%d",self._cost))
+        self._priceText:setString(tostring(self._cost))
 
     elseif iconType == GameDefine.ICON_TYPE.UPDATE then
         for _, type in pairs(GameDefine.TOWER_TYPE) do
@@ -135,7 +119,7 @@ function Icon:checkIcon(iconType, attributes)
                 break
             end
         end
-        self._priceText:setString(string.format("%d",self._cost))
+        self._priceText:setString(tostring(self._cost))
 
     elseif iconType == GameDefine.ICON_TYPE.CELL then
         for _, type in pairs(GameDefine.TOWER_TYPE) do
@@ -145,7 +129,7 @@ function Icon:checkIcon(iconType, attributes)
                 break
             end
         end
-        self._priceText:setString(string.format("%d",self._cost))
+        self._priceText:setString(tostring(self._cost))
 
     elseif iconType == GameDefine.ICON_TYPE.LOCKED then
         self._priceImg:hide()

@@ -153,13 +153,21 @@ end
 function GameLogic:sendNextEnmyList()
 
     if isEmpty(self._fullEnmyList) then
-        printError("enmy list empty")
+        printError("fullEnmyList empty")
         return
     end
 
+    if type(self._fullEnmyList[1] ~= "table") then
+        printError("fullEnmyList error")
+        return
+    end
+    
     self._status.wave = self._status.wave + 1
     self:sendStatus()
     dispatcher:postEvent(GameDefine.GAME_EVENT.ENMY_CREATE,self._fullEnmyList[1])
+    for _, enmy in pairs(self._fullEnmyList[1]) do
+        table.pushBack(self._cEnmyList, enmy)
+    end
     table.remove( self._fullEnmyList, 1 )
     
 end

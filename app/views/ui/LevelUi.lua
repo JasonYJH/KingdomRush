@@ -45,6 +45,17 @@ function LevelUi:init()
     self:getEventDispatcher():addEvent(GameDefine.GAME_EVENT.STATUS_CHANGE, self, self.handleStatusChange)
 end
 
+function LevelUi:addEvent()
+    
+    local function onNodeEvent(event)
+        if event == "exit" then
+            self:getEventDispatcher():removeEvent(GameDefine.GAME_EVENT.STATUS_CHANGE)
+        end
+    end
+    self:registerScriptHandler(onNodeEvent)
+    
+end
+
 function LevelUi:handleStatusChange(info)
     printInfo("event in levelui")
     if isEmpty(info) then
