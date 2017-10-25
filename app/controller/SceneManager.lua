@@ -15,6 +15,7 @@ function SceneManager:addEvent()
 
     cc.Director:getInstance():getEventDispatcher():addEvent(GameDefine.FRAME_EVENT.LOGINSCENE_INIT_READY, self, self.handleLoginReady)
     cc.Director:getInstance():getEventDispatcher():addEvent(GameDefine.FRAME_EVENT.LEVEL_MAP_INIT       , self, self.handleInitLevelMap)
+    cc.Director:getInstance():getEventDispatcher():addEvent(GameDefine.GAME_EVENT.ENMY_CREATE           , self, self.handleEnmyCreate)
 
 end
 
@@ -70,6 +71,19 @@ function SceneManager:createLevel(levelID)
     self._gameLogic:setCurrentLevel(levelID)
     cc.Director:getInstance():getEventDispatcher():postEvent(GameDefine.GAME_EVENT.GAME_READY)
     
+end
+
+function SceneManager:handleEnmyCreate(sender)
+
+    if isEmpty(sender) then
+        return
+    end
+
+    for _, role in pairs(sender) do
+        if role.type == "robber" then
+            
+        end
+    end
 end
 
 

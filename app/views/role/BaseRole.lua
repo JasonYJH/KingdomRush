@@ -1,6 +1,7 @@
 local BaseRole = class("BaseRole",cc.Node)
 
 function BaseRole:ctor()
+    -- 通用属性
     self._mLife = 0     -- 总血量
     self._cLife = 0     -- 当前血量
     self._speed = 0
@@ -9,6 +10,8 @@ function BaseRole:ctor()
     self._damage = {}
     self._isEnmy = true
     self._fly = false
+    self._airDefence = false    -- 能否对空
+
     self._lifeBar = nil
     self._roleAction = nil
 end
@@ -64,6 +67,23 @@ function BaseRole:attack()
     if self._info.target:getPosition():distance(self:getPosition()) > self._range then
         self:getScheduler():unscheduleScriptEntry(self._scheduleAttack)
         self._scheduleAttack = nil
+    end
+
+end
+
+function BaseRole:handleGetDamage(sender)
+    
+    if isEmpty(sender) or sender.target ~= self then
+        return
+    end
+
+    if sender.attacker._airDefence or (self._fly == false) then
+        self._cLife = self._cLife - sender.damage
+        if self._cLife < 0 then
+            self._cLife = 0
+            self:getEventDispatcher():postEvent(GameDefine.GAME_EVENT.ROLE_DEATH,self)
+        end
+        self:setLifeBar()
     end
 
 end

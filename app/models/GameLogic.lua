@@ -42,8 +42,7 @@ function GameLogic:handlerEvent()
     dispatcher:addEvent(GameDefine.GAME_EVENT.REQUEST_STATUS,  self, self.sendStatus)
     dispatcher:addEvent(GameDefine.GAME_EVENT.GAME_READY,      self, self.handleGameReady)
     dispatcher:addEvent(GameDefine.GAME_EVENT.NEXT_ENMY_READY, self, self.sendNextEnmyList)
-    dispatcher:addEvent(GameDefine.GAME_EVENT.ENMY_HURT,       self, self.handleEnmyGetHurt)
-    dispatcher:addEvent(GameDefine.GAME_EVENT.ARMY_HURT,       self, self.handleArmyGetHurt)
+    dispatcher:addEvent(GameDefine.GAME_EVENT.ROLE_DEATH,      self, self.handleRoleDeath)
     dispatcher:addEvent(GameDefine.GAME_EVENT.FIND_TARGET,     self, self.handleFindTarget)
 end
 
@@ -68,40 +67,36 @@ function GameLogic:handleGameReady(Info)
 
 end
 
-function GameLogic:handleEnmyGetHurt(Info)
+function GameLogic:handleRoleDeath(sender)
     
-    if isEmpty(self._cEnmyList) or isEmpty(Info) then
+    if isEmpty(sender) then
         return
     end
 
-    for k, enmy in pairs(self._cEnmyList) do
-        if(enmy == Info.target) then
-            enmy._cLife = enmy._cLife - Info.damage
-            if enmy._cLife <= 0 then    -- 敌人死亡
-                if not isEmpty(enmy._gold) then
-                    self._status.gold = self._status.gold + enmy._gold
+    if sender._isEnmy then
+        for _, role in pairs(self._cEnmyList) do
+            if role == sender then
+                if not isEmpty(sender._gold) then
+                    self._status.gold = self._status.gold + role._gold
                     self:sendStatus()
                 end
-                enmy:remove()
-                enmy = nil
-                self._cEnmyList =  table.values(self._cEnmyList)
-                
-                if isEmpty(self._cEnmyList) and isEmpty(self._fullEnmyList) then
-                    --gameover
-                elseif isEmpty(self._cEnmyList) then
-                    -- 下一波准备
-                end
-
-            else
-                enmy:setLifeBar()
+                role = nil
+                self._cEnmyList = table.values(self._cEnmyList)
+                break
             end
-            break
-        end 
+        end
+        if isEmpty(self._cEnmyList) then
+            -- 下一波敌人
+        end
+    else
+        for _, role in pairs(self._cArmyList) do
+            if role == sender then
+                role = nil
+                self._cArmyList = table.values(self._cArmyList)
+                break
+            end
+        end
     end
-
-end
-
-function GameLogic:handleArmyGetHurt(Info)
 
 end
 
@@ -165,9 +160,6 @@ function GameLogic:sendNextEnmyList()
     self._status.wave = self._status.wave + 1
     self:sendStatus()
     dispatcher:postEvent(GameDefine.GAME_EVENT.ENMY_CREATE,self._fullEnmyList[1])
-    for _, enmy in pairs(self._fullEnmyList[1]) do
-        table.pushBack(self._cEnmyList, enmy)
-    end
     table.remove( self._fullEnmyList, 1 )
     
 end
